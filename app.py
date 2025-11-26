@@ -128,8 +128,10 @@ st.dataframe(input_df)
 # PREPROCESSING
 # ---------------------------------------------------------
 # 1. One-Hot Encode the user input
-# drop_first=True must be set to match your training logic
-input_encoded = pd.get_dummies(input_df, drop_first=True)
+# BUG FIX: Removed drop_first=True. 
+# On a single row, drop_first=True deletes the only category present, causing all zeros.
+# The reindex step below handles the filtering correctly.
+input_encoded = pd.get_dummies(input_df)
 
 # 2. ALIGN COLUMNS (Crucial Step)
 # The user input might generate fewer columns than the training set 
