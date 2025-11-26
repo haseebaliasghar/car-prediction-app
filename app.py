@@ -46,34 +46,72 @@ st.sidebar.header("User Input Features")
 
 # Helper function to match the exact strings used in your CSV
 def user_input_features():
+    # Define mappings from UI Display -> Backend Value
+    buying_map = {
+        "Low": "low",
+        "Medium": "med",
+        "High": "high",
+        "Very High": "vhigh"
+    }
+    
+    maint_map = {
+        "Low": "low",
+        "Medium": "med",
+        "High": "high",
+        "Very High": "vhigh"
+    }
+    
+    doors_map = {
+        "2": "2",
+        "3": "3",
+        "4": "4",
+        "5 or more": "5more"
+    }
+    
+    persons_map = {
+        "2": "2",
+        "4": "4",
+        "More than 4": "more"
+    }
+    
+    lug_boot_map = {
+        "Small": "small",
+        "Medium": "med",
+        "Big": "big"
+    }
+    
+    safety_map = {
+        "Low": "low",
+        "Medium": "med",
+        "High": "high"
+    }
+
     # 1. Buying Price
-    buying = st.sidebar.selectbox("Buying Price", ["vhigh", "high", "med", "low"])
+    buying_ui = st.sidebar.selectbox("Buying Price", list(buying_map.keys()))
     
     # 2. Maintenance Cost
-    maint = st.sidebar.selectbox("Maintenance Cost", ["vhigh", "high", "med", "low"])
+    maint_ui = st.sidebar.selectbox("Maintenance Cost", list(maint_map.keys()))
     
     # 3. Number of Doors
-    # Note: In your dataset, '5more' is a string
-    doors = st.sidebar.selectbox("Number of Doors", ["2", "3", "4", "5more"])
+    doors_ui = st.sidebar.selectbox("Number of Doors", list(doors_map.keys()))
     
     # 4. Capacity (Persons)
-    # Note: 'more' is a string
-    persons = st.sidebar.selectbox("Capacity (Persons)", ["2", "4", "more"])
+    persons_ui = st.sidebar.selectbox("Capacity (Persons)", list(persons_map.keys()))
     
     # 5. Luggage Boot Size
-    lug_boot = st.sidebar.selectbox("Luggage Boot Size", ["small", "med", "big"])
+    lug_boot_ui = st.sidebar.selectbox("Luggage Boot Size", list(lug_boot_map.keys()))
     
     # 6. Safety
-    safety = st.sidebar.selectbox("Safety Level", ["low", "med", "high"])
+    safety_ui = st.sidebar.selectbox("Safety Level", list(safety_map.keys()))
 
-    # Create a dictionary
+    # Create a dictionary using the mapped backend values
     data = {
-        'buying': buying,
-        'maint': maint,
-        'doors': doors,
-        'persons': persons,
-        'lug_boot': lug_boot,
-        'safety': safety
+        'buying': buying_map[buying_ui],
+        'maint': maint_map[maint_ui],
+        'doors': doors_map[doors_ui],
+        'persons': persons_map[persons_ui],
+        'lug_boot': lug_boot_map[lug_boot_ui],
+        'safety': safety_map[safety_ui]
     }
     
     return pd.DataFrame(data, index=[0])
@@ -82,6 +120,8 @@ input_df = user_input_features()
 
 # Display User Selection
 st.subheader("Current Car Configuration")
+# We display the raw input dataframe here, which now contains the backend codes.
+# If you want to show the pretty names here too, we would need a separate display dataframe.
 st.dataframe(input_df)
 
 # ---------------------------------------------------------
